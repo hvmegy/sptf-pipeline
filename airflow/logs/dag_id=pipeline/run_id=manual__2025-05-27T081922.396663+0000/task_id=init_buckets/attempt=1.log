@@ -1,0 +1,28 @@
+[2025-05-27T08:19:23.178+0000] {local_task_job_runner.py:123} INFO - ::group::Pre task execution logs
+[2025-05-27T08:19:23.195+0000] {taskinstance.py:2631} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: pipeline.init_buckets manual__2025-05-27T08:19:22.396663+00:00 [queued]>
+[2025-05-27T08:19:23.201+0000] {taskinstance.py:2631} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: pipeline.init_buckets manual__2025-05-27T08:19:22.396663+00:00 [queued]>
+[2025-05-27T08:19:23.202+0000] {taskinstance.py:2884} INFO - Starting attempt 1 of 6
+[2025-05-27T08:19:23.214+0000] {taskinstance.py:2907} INFO - Executing <Task(BashOperator): init_buckets> on 2025-05-27 08:19:22.396663+00:00
+[2025-05-27T08:19:23.220+0000] {standard_task_runner.py:104} INFO - Running: ['***', 'tasks', 'run', 'pipeline', 'init_buckets', 'manual__2025-05-27T08:19:22.396663+00:00', '--job-id', '17', '--raw', '--subdir', 'DAGS_FOLDER/pipeline.py', '--cfg-path', '/tmp/tmpxq1v8gfp']
+[2025-05-27T08:19:23.221+0000] {logging_mixin.py:190} WARNING - /home/***/.local/lib/python3.12/site-packages/***/task/task_runner/standard_task_runner.py:70 DeprecationWarning: This process (pid=637) is multi-threaded, use of fork() may lead to deadlocks in the child.
+[2025-05-27T08:19:23.222+0000] {standard_task_runner.py:105} INFO - Job 17: Subtask init_buckets
+[2025-05-27T08:19:23.223+0000] {standard_task_runner.py:72} INFO - Started process 638 to run task
+[2025-05-27T08:19:23.272+0000] {task_command.py:467} INFO - Running <TaskInstance: pipeline.init_buckets manual__2025-05-27T08:19:22.396663+00:00 [running]> on host ***
+[2025-05-27T08:19:23.359+0000] {taskinstance.py:3157} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='***' AIRFLOW_CTX_DAG_ID='pipeline' AIRFLOW_CTX_TASK_ID='init_buckets' AIRFLOW_CTX_EXECUTION_DATE='2025-05-27T08:19:22.396663+00:00' AIRFLOW_CTX_TRY_NUMBER='1' AIRFLOW_CTX_DAG_RUN_ID='manual__2025-05-27T08:19:22.396663+00:00'
+[2025-05-27T08:19:23.361+0000] {taskinstance.py:740} INFO - ::endgroup::
+[2025-05-27T08:19:23.377+0000] {subprocess.py:78} INFO - Tmp dir root location: /tmp
+[2025-05-27T08:19:23.379+0000] {subprocess.py:88} INFO - Running command: ['/usr/bin/bash', '-c', 'pwd && ls -la && /opt/***/scripts/create_bucket.sh ']
+[2025-05-27T08:19:23.386+0000] {subprocess.py:99} INFO - Output:
+[2025-05-27T08:19:23.388+0000] {subprocess.py:106} INFO - /tmp/***tmp1an524qr
+[2025-05-27T08:19:23.390+0000] {subprocess.py:106} INFO - total 8
+[2025-05-27T08:19:23.390+0000] {subprocess.py:106} INFO - drwx------ 2 *** root 4096 May 27 08:19 .
+[2025-05-27T08:19:23.391+0000] {subprocess.py:106} INFO - drwxrwxrwt 1 root    root 4096 May 27 08:19 ..
+[2025-05-27T08:19:25.824+0000] {subprocess.py:106} INFO - Bucket 'bronze' đã tồn tại.
+[2025-05-27T08:19:25.825+0000] {subprocess.py:106} INFO - Bucket 'silver' đã tồn tại.
+[2025-05-27T08:19:25.826+0000] {subprocess.py:106} INFO - Bucket 'gold' đã tồn tại.
+[2025-05-27T08:19:25.877+0000] {subprocess.py:110} INFO - Command exited with return code 0
+[2025-05-27T08:19:25.901+0000] {taskinstance.py:349} INFO - ::group::Post task execution logs
+[2025-05-27T08:19:25.902+0000] {taskinstance.py:361} INFO - Marking task as SUCCESS. dag_id=pipeline, task_id=init_buckets, run_id=manual__2025-05-27T08:19:22.396663+00:00, execution_date=20250527T081922, start_date=20250527T081923, end_date=20250527T081925
+[2025-05-27T08:19:25.969+0000] {local_task_job_runner.py:266} INFO - Task exited with return code 0
+[2025-05-27T08:19:25.983+0000] {taskinstance.py:3924} INFO - 0 downstream tasks scheduled from follow-on schedule check
+[2025-05-27T08:19:25.985+0000] {local_task_job_runner.py:245} INFO - ::endgroup::
