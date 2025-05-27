@@ -1,0 +1,1 @@
+docker exec sptf-spark bash /opt/spark/work-dir/submit_clean.sh 

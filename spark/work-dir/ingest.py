@@ -1,19 +1,29 @@
 from pyspark.sql import SparkSession
 
-spark = SparkSession.builder \
-    .appName("JSON to Iceberg on MinIO") \
-    .config("spark.sql.catalog.my_catalog", "org.apache.iceberg.spark.SparkCatalog") \
-    .config("spark.sql.catalog.my_catalog.type", "hadoop") \
-    .config("spark.sql.catalog.my_catalog.warehouse", "s3a://my-bucket/warehouse") \
-    .config("spark.hadoop.fs.s3a.endpoint", "http://localhost:9000") \
-    .config("spark.hadoop.fs.s3a.access.key", "admin") \
-    .config("spark.hadoop.fs.s3a.secret.key", "admin123") \
-    .config("spark.hadoop.fs.s3a.path.style.access", "true") \
+# Khởi tạo SparkSession với hỗ trợ Iceberg và S3
+spark = (
+    SparkSession.builder
+    .appName("JSON to Iceberg on MinIO")
+    .config("spark.sql.catalog.bronze", "org.apache.iceberg.spark.SparkCatalog")
+    .config("spark.sql.catalog.bronze.type", "hadoop")
+    .config("spark.sql.catalog.bronze.warehouse", "s3a://bronze/")
     .config("spark.hadoop.fs.s3a.impl", "org.apache.hadoop.fs.s3a.S3AFileSystem") \
+    .config("spark.hadoop.fs.s3a.path.style.access", "true") \
+    .config("spark.hadoop.fs.s3a.connection.ssl.enabled", "false") \
+    .config("spark.hadoop.fs.s3a.bucket.bronze.endpoint", "http://minio:9000") \
+    .config("spark.hadoop.fs.s3a.bucket.bronze.access.key", "admin") \
+    .config("spark.hadoop.fs.s3a.bucket.bronze.secret.key", "admin123") \
     .getOrCreate()
+)
 
-# Đọc tất cả JSON trong thư mục
-df = spark.read.json("/data/json/")
+input_path = "./data/"
+df = spark.read.option("multiline", "true").json(input_path + "*.json")
 
-# Ghi vào Iceberg (s3a://my-bucket/warehouse/my_db.my_table)
-df.writeTo("my_catalog.my_db.my_table").createOrReplace()
+df.printSchema()
+df.show(5, truncate=False)
+
+df.writeTo("bronze.raw.streaming_history") \
+  .using("iceberg") \
+  .createOrReplace()
+
+spark.stop()

@@ -4,6 +4,7 @@ from datetime import timedelta
 from airflow.operators.bash import BashOperator
 from airflow.operators.dummy_operator import DummyOperator
 
+scripts_path = "$HOME/scripts/"
 
 with DAG(
     'pipeline',
@@ -33,5 +34,17 @@ with DAG(
         
         create_bucket = BashOperator( 
             task_id="init_buckets",
-            bash_command="/$HOME/scripts/create_bucket.sh ",                            
+            bash_command=scripts_path + "create_bucket.sh ",                            
         )
+        
+        ingest = BashOperator( 
+            task_id="ingest",
+            bash_command=scripts_path + "ingest.sh "
+        )
+        
+        clean = BashOperator( 
+            task_id="clean", 
+            bash_command=scripts_path + "clean.sh "                     
+        )
+        
+        start >> create_bucket >> ingest >> clean 

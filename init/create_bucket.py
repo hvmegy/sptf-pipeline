@@ -17,6 +17,9 @@ for bucket in bucket_list:
             client.make_bucket(bucket)
             print(f"Bucket '{bucket}' đã được tạo.")
         else:
+            objects = client.list_objects(bucket, recursive=True)
+            for obj in objects:
+                client.remove_object(bucket, obj.object_name)
             print(f"Bucket '{bucket}' đã tồn tại.")
     except S3Error as err:
         print(f"Error: {err}")

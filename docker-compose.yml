@@ -72,7 +72,8 @@ services:
     ports:
       - "4040:4040"  # UI Spark Web
     volumes:
-      - ./spark:/opt/spark
+      - ./spark/.iv2/:/home/spark/.ivy2/
+      - ./spark/:/opt/spark
     command: sleep infinity
 
 
