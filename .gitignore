@@ -1,7 +1,7 @@
-airflow/dags/__pycache__
-init/.cache
-init/.local
-init/.bash_history
-my_spotify_data
-spark/jars
-./airflow/logs
+airflow/dags/__pycache__/
+init/.cache/
+init/.local/
+init/.bash_history/
+my_spotify_data/
+spark/jars/
+./airflow/logs/
