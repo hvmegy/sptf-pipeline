@@ -1,1 +1,1 @@
-![sptf-pipeline-diagram](https://github.com/user-attachments/assets/63cdb975-afa4-497b-bd26-1d99f52e6d53)
+![Pipeline Diagram](https://github.com/user-attachments/assets/98b67934-20ac-474a-8bc0-5c8999feadaf)
