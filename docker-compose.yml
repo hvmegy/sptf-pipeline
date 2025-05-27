@@ -1,0 +1,81 @@
+services:
+  init: 
+    build: 
+      context: ./init
+      dockerfile: Dockerfile
+    container_name: sptf-init 
+    hostname: init 
+    volumes:
+      - ./init/:/home/init/
+    command: > 
+      bash -c  "
+        pip install -r requirements.txt && \ 
+        sleep infinity
+      "
+
+  postgres:
+    image: postgres:17
+    container_name: sptf-postgres
+    hostname: postgres
+    environment:
+      POSTGRES_USER: airflow
+      POSTGRES_PASSWORD: airflow
+      POSTGRES_DB: airflow
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+
+  airflow:
+    image: apache/airflow:2.11.0
+    container_name: sptf-airflow
+    hostname: airflow
+    
+    environment:  
+      AIRFLOW__CORE__AUTH_MANAGER: airflow.providers.fab.auth_manager.fab_auth_manager.FabAuthManager
+      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres:5432/airflow
+      AIRFLOW__CORE__EXECUTOR: LocalExecutor
+      HOME: /opt/airflow/
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./airflow/:/opt/airflow/
+      # - ./airflow/simple_auth_manager_passwords.json.generated:/opt/airflow/simple_auth_manager_passwords.json.generated
+    command: >
+      bash -c "
+        airflow db migrate &&
+        airflow users create --email email --firstname firstname --lastname lastname --password admin --role Admin --username admin &&
+        airflow standalone
+      "
+    ports:
+      - "8080:8080"
+  
+  minio:
+    image: minio/minio:latest
+    container_name: sptf-minio
+    hostname: minio
+    ports:
+      - "9000:9000"    # S3 API
+      - "9001:9001"    # MinIO Console UI
+    environment:
+      MINIO_ROOT_USER: admin
+      MINIO_ROOT_PASSWORD: admin123
+    volumes:
+      - minio_data:/data
+    command: server /data --console-address ":9001"
+    restart: unless-stopped
+
+  spark:
+    image: apache/spark:3.4.4
+    container_name: sptf-spark
+    hostname: spark
+    environment:
+      - SPARK_MODE=master
+      - HOME=/opt/spark/work-dir
+    ports:
+      - "4040:4040"  # UI Spark Web
+    volumes:
+      - ./spark:/opt/spark
+    command: sleep infinity
+
+
+volumes:
+  pg_data:
+  minio_data:

@@ -1,0 +1,1 @@
+docker exec sptf-init python /home/init/create_bucket.py
