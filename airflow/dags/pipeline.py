@@ -2,7 +2,7 @@ from airflow import DAG
 from datetime import datetime
 from datetime import timedelta
 from airflow.operators.bash import BashOperator
-from airflow.operators.dummy_operator import DummyOperator
+from airflow.operators.empty import EmptyOperator
 
 scripts_path = "$HOME/scripts/"
 
@@ -30,11 +30,19 @@ with DAG(
     schedule=timedelta(days=1),
     catchup=False,
 ) as dag:
-        start = DummyOperator(task_id='start')
+        start = EmptyOperator(task_id='start')
+        
+        init = EmptyOperator(task_id='init')
+        pipeline = EmptyOperator(task_id='pipeline')
         
         create_bucket = BashOperator( 
             task_id="init_buckets",
             bash_command=scripts_path + "create_bucket.sh ",                            
+        )
+        
+        init_clickhouse = BashOperator(
+            task_id="init_clickhouse",
+            bash_command=scripts_path + "init_clickhouse.sh "
         )
         
         ingest = BashOperator( 
@@ -47,4 +55,22 @@ with DAG(
             bash_command=scripts_path + "clean.sh "                     
         )
         
-        start >> create_bucket >> ingest >> clean 
+        transform = BashOperator( 
+            task_id="transform",
+            bash_command=scripts_path + "transform.sh "
+        )
+        load = BashOperator( 
+            task_id="load",
+            bash_command=scripts_path + "load.sh "
+        )
+        finish = BashOperator(
+            task_id="finish",
+            bash_command=scripts_path + "finish.sh "
+        )
+        
+        start >> init 
+        init >> [create_bucket, init_clickhouse]
+        [create_bucket, init_clickhouse] >> pipeline
+        pipeline >> ingest >> clean >> transform >> load >> finish
+        
+        

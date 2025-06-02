@@ -1,0 +1,1 @@
+docker exec sptf-clickhouse bash /home/clickhouse/create_database.sh

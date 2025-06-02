@@ -1,0 +1,13 @@
+ls
+clear
+./create_database.sh 
+exit
+ls
+./create_database.s
+./create_database.sh
+exit
+ls
+ls
+pwd
+pwd
+exit

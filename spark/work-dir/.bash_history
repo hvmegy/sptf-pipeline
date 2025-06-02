@@ -80,3 +80,49 @@ pyspark clean.py
 cleả
 clear
 exit 
+cd
+ls
+./submit_transform.sh 
+./submit_transform.sh 
+./submit_transform.sh 
+pyspark --packages org.apache.iceberg:iceberg-spark-runtime-3.3_2.12:1.5.0,org.apache.hadoop:hadoop-aws:3.3.4,software.amazon.awssdk:s3:2.17.106
+/opt/spark/bin/pyspark --packages org.apache.iceberg:iceberg-spark-runtime-3.3_2.12:1.5.0,org.apache.hadoop:hadoop-aws:3.3.4,software.amazon.awssdk:s3:2.17.106
+exit
+/
+submit_transform
+./submit_transform.sh 
+echo $SPARK_HOME
+ls
+cd $SPARK_HOME
+ls
+cd
+./submit_transform.sh 
+./submit_transform.sh 
+exit
+ls
+./submit_load.sh
+./submit_load.sh
+spark.jars.packages org.apache.iceberg:iceberg-spark-runtime-3.3_2.12:1.5.0,org.apache.hadoop:hadoop-aws:3.3.4,software.amazon.awssdk:s3:2.17.106, \
+echo $SPARK_CONF_DIR
+exit
+./spark_submit
+./submit_load.sh 
+./submit_load.sh 
+./submit_transform.sh 
+./submit_clean.sh 
+./submit_load.sh 
+./submit_load.sh 
+./submit_load.sh 
+./submit_load.sh 
+exit
+./submit_load.sh 
+./submit_load.sh 
+./submit_load.sh 
+./submit_load.sh 
+./submit_load.sh 
+exit
+ls
+ssh clickhouse
+exit
+./submit_load.sh 
+exit

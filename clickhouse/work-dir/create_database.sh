@@ -1,0 +1,1 @@
+clickhouse-client --queries-file ./create_database.sql

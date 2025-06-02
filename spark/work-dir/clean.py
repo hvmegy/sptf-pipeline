@@ -1,6 +1,6 @@
 from pyspark.sql import SparkSession
 from pyspark.sql import functions as fn
-from pyspark.sql.functions import col, sum as spark_sum
+from pyspark.sql.functions import col, sum as spark_sum, to_timestamp, regexp_replace
 
 # Khởi tạo SparkSession với hỗ trợ Iceberg và S3
 spark = (
@@ -32,7 +32,16 @@ df = df.select('incognito_mode', 'ip_addr', 'master_metadata_album_album_name', 
 
 clean_df = df.na.drop()
 
-clean_df.writeTo("silver.cleaned.streaming_history") \
+
+df2 = clean_df.withColumn(
+    "ts",
+ to_timestamp(
+        regexp_replace(regexp_replace("ts", "T", " "), "Z", ""), 
+        "yyyy-MM-dd HH:mm:ss"
+    )
+)
+
+df2.writeTo("silver.cleaned.streaming_history") \
   .using("iceberg") \
   .createOrReplace()
 
